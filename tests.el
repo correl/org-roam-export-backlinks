@@ -15,7 +15,7 @@
 (require 'org-roam-export)
 
 (setq org-roam-directory (expand-file-name "./test-slipbox")
-      org-roam-db-location (expand-file-name "org-roam.db"))
+      org-roam-db-location (expand-file-name "./test-slipbox/org-roam.db"))
 (org-roam-update-org-id-locations)
 (org-roam-db-sync)
 

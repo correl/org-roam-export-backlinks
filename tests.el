@@ -36,10 +36,9 @@
   (should (equal '("id:d12a1ce4-3199-42f4-b39b-b68c03458669")
                  (mapcar #'org-roam-export-backlink-link (org-roam-backlinks-get (org-roam-node-from-id "e6c17c1a-6b05-40d2-a01f-b147633c51b1") :unique t)))))
 
-(ert-deftest excerpt-tests ()
-
-  (with-temp-buffer
-    (org-mode)
+(defmacro with-test-document (&rest body)
+  `(with-temp-buffer
+     (org-mode)
     (insert ":PROPERTIES:
 :ID:       e44c8b00-f90d-4fcc-b8a1-742b659ff252
 :END
@@ -60,24 +59,38 @@ Opening paragraph.
 
   Heading two paragraph.
 ")
-    ;; Elements
-    (goto-line 6)
-    (should (equal "Opening paragraph.\n" (org-roam-export--excerpt)))
-    (goto-line 10)
-    (should (equal "  Heading one paragraph.\n" (org-roam-export--excerpt)))
+    ,@body))
+
+(ert-deftest excerpt-opening-paragraph-test ()
+  (with-test-document
+   (goto-line 6)
+   (should (equal "Opening paragraph.\n" (org-roam-export--excerpt)))))
+
+(ert-deftest excerpt-heading-paragraph-test ()
+  (with-test-document
+   (goto-line 10)
+   (should (equal "  Heading one paragraph.\n" (org-roam-export--excerpt)))))
+
+(ert-deftest excerpt-list-test ()
+  (with-test-document
     (goto-line 14)
-    (should (equal "  - List item 1\n  - List item 2\n" (org-roam-export--excerpt)))
-    ;; Headings
-    (goto-line 8)
+    (should (equal "  - List item 1\n  - List item 2\n" (org-roam-export--excerpt)))))
+
+(ert-deftest excerpt-heading-with-subheadings-test ()
+  (with-test-document
+   (goto-line 8)
     (should (equal "  Heading one paragraph.
 
 ** Subheading One A
 
   - List item 1
   - List item 2
-" (org-roam-export--excerpt)))
-    (goto-line 17)
-    (should (equal "  Heading two paragraph.\n" (org-roam-export--excerpt)))))
+" (org-roam-export--excerpt)))))
+
+(ert-deftest excerpt-simple-heading-test ()
+  (with-test-document
+   (goto-line 17)
+   (should (equal "  Heading two paragraph.\n" (org-roam-export--excerpt)))))
 
 (ert-deftest lorem-backlink-excerpt ()
   (should (equal '("Aliquam [[id:d12a1ce4-3199-42f4-b39b-b68c03458669][lorem]] ante, suscipit a lorem molestie, aliquet elementum eros. Proin

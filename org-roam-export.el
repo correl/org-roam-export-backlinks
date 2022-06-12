@@ -34,5 +34,14 @@
   "Get Org link to BACKLINK."
   (concat "id:" (org-roam-node-id (org-roam-backlink-source-node backlink))))
 
+(defun org-roam-export-backlink-excerpt (backlink)
+  "Get the Org element containing the link from BACKLINK as an excerpt."
+  (with-temp-buffer
+    (insert-file-contents-literally (org-roam-node-file (org-roam-backlink-source-node backlink)))
+    (goto-char (org-roam-backlink-point backlink))
+    (let ((element (org-element-at-point)))
+      (s-trim (buffer-substring (org-element-property :contents-begin element)
+                                (org-element-property :contents-end element))))))
+
 (provide 'org-roam-export)
 ;;; org-roam-export.el ends here

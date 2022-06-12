@@ -3,7 +3,7 @@
 :END:
 #+title: Lorem
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris eget viverra mi.
+Lorem [[id:e6c17c1a-6b05-40d2-a01f-b147633c51b1][ipsum]] dolor sit amet, consectetur adipiscing elit. Mauris eget viverra mi.
 Duis eget dui id tellus fermentum vehicula. Duis tincidunt quam vel erat
 bibendum commodo. Phasellus in justo vitae magna commodo rhoncus id quis justo.
 Morbi id malesuada nisi. Praesent ipsum velit, commodo vel bibendum vitae,

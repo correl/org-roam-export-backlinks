@@ -2,8 +2,8 @@
 ;;
 ;; Copyright (C) 2022 Correl Roush
 ;;
-;; Author: Correl Roush <correlr@zephyrus>
-;; Maintainer: Correl Roush <correlr@zephyrus>
+;; Author: Correl Roush <correl@gmail.com>
+;; Maintainer: Correl Roush <correl@gmail.com>
 ;; Created: June 10, 2022
 ;; Modified: June 10, 2022
 ;; Version: 0.0.1

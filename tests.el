@@ -28,6 +28,14 @@
   (should (equal '("Lorem")
                  (mapcar #'org-roam-export-backlink-title (org-roam-backlinks-get (org-roam-node-from-id "e6c17c1a-6b05-40d2-a01f-b147633c51b1") :unique t)))))
 
+(ert-deftest lorem-backlink-link ()
+  (should (equal '("id:e6c17c1a-6b05-40d2-a01f-b147633c51b1")
+                 (mapcar #'org-roam-export-backlink-link (org-roam-backlinks-get (org-roam-node-from-id "d12a1ce4-3199-42f4-b39b-b68c03458669") :unique t)))))
+
+(ert-deftest ipsum-backlink-link ()
+  (should (equal '("id:d12a1ce4-3199-42f4-b39b-b68c03458669")
+                 (mapcar #'org-roam-export-backlink-link (org-roam-backlinks-get (org-roam-node-from-id "e6c17c1a-6b05-40d2-a01f-b147633c51b1") :unique t)))))
+
 (ert-deftest lorem-backlink-excerpt ()
   (should (equal '("Aliquam [[id:d12a1ce4-3199-42f4-b39b-b68c03458669][lorem]] ante, suscipit a lorem molestie, aliquet elementum eros. Proin
 mattis lacus nec dapibus auctor. Donec lacinia finibus ex vitae tempor.

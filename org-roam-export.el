@@ -19,7 +19,7 @@
 ;;
 ;;; Code:
 
-
+(require 'org-roam)
 
 (provide 'org-roam-export)
 ;;; org-roam-export.el ends here

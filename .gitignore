@@ -5,3 +5,5 @@ tmp/
 
 
 .eldev
+*.elc
+org-roam.db

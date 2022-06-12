@@ -20,9 +20,6 @@
 (org-roam-db-sync)
 
 
-(ert-deftest simple-test ()
-  (should (= 1 1)))
-
 (ert-deftest lorem-backlink-titles ()
   (should (equal '("Ipsum > II")
                  (mapcar #'org-roam-export-backlink-title (org-roam-backlinks-get (org-roam-node-from-id "d12a1ce4-3199-42f4-b39b-b68c03458669") :unique t)))))

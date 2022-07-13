@@ -48,5 +48,14 @@
     (goto-char (org-roam-backlink-point backlink))
     (org-roam-export--excerpt)))
 
+(defun org-roam-export-format-backlink (title excerpt)
+  "Format a backlink with TITLE and EXCERPT for inclusion in an Org document."
+  (with-temp-buffer
+    (org-mode)
+    (insert "** " title "\n\n")
+    (if (string-match-p "^\*+ " excerpt) (org-paste-subtree 3 excerpt)
+      (insert excerpt))
+    (buffer-string)))
+
 (provide 'org-roam-export)
 ;;; org-roam-export.el ends here

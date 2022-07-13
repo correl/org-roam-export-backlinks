@@ -115,5 +115,40 @@ venenatis eget. Proin laoreet nulla a enim bibendum finibus. Proin mattis
 lobortis quam non eleifend. Pellentesque vitae imperdiet nisl.\n")
                  (mapcar #'org-roam-export-backlink-excerpt (org-roam-backlinks-get (org-roam-node-from-id "e6c17c1a-6b05-40d2-a01f-b147633c51b1") :unique t)))))
 
+(ert-deftest format-backlink-test ()
+  (should (equal "** Heading > Subheading
+
+Paragraph text.
+"
+                 (org-roam-export-format-backlink
+                  "Heading > Subheading"
+                  "Paragraph text.\n"))))
+
+(ert-deftest format-backlink-with-subheadings ()
+  (should (equal "** Heading
+
+*** Subheading One
+
+Paragraph text.
+
+**** Subheading Two
+
+***** Subheading Two A
+
+Paragraph text.
+"
+                 (org-roam-export-format-backlink
+                  "Heading"
+                  "** Subheading One
+
+Paragraph text.
+
+*** Subheading Two
+
+**** Subheading Two A
+
+Paragraph text.
+"))))
+
 (provide 'tests)
 ;;; tests.el ends here

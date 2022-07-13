@@ -120,7 +120,7 @@ lobortis quam non eleifend. Pellentesque vitae imperdiet nisl.\n")
 
 Paragraph text.
 "
-                 (org-roam-export-format-backlink
+                 (org-roam-export--format-backlink
                   "Heading > Subheading"
                   "Paragraph text.\n"))))
 
@@ -137,7 +137,7 @@ Paragraph text.
 
 Paragraph text.
 "
-                 (org-roam-export-format-backlink
+                 (org-roam-export--format-backlink
                   "Heading"
                   "** Subheading One
 

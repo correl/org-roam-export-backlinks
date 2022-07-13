@@ -9,7 +9,7 @@
 ;; Version: 0.0.1
 ;; Keywords: abbrev bib c calendar comm convenience data docs emulations extensions faces files frames games hardware help hypermedia i18n internal languages lisp local maint mail matching mouse multimedia news outlines processes terminals tex tools unix vc wp
 ;; Homepage: https://github.com/correlr/org-roam-export
-;; Package-Requires: ((emacs "24.4") (org-roam "2.2.1"))
+;; Package-Requires: ((emacs "25.1") (org-roam "2.2.1"))
 ;;
 ;; This file is not part of GNU Emacs.
 ;;
@@ -48,7 +48,7 @@
     (goto-char (org-roam-backlink-point backlink))
     (org-roam-export--excerpt)))
 
-(defun org-roam-export-format-backlink (title excerpt)
+(defun org-roam-export--format-backlink (title excerpt)
   "Format a backlink with TITLE and EXCERPT for inclusion in an Org document."
   (with-temp-buffer
     (org-mode)
@@ -56,6 +56,23 @@
     (if (string-match-p "^\*+ " excerpt) (org-paste-subtree 3 excerpt)
       (insert excerpt))
     (buffer-string)))
+
+(defun org-roam-export-format-backlink (backlink)
+  "Format a BACKLINK for inclusion in an Org document."
+  (org-roam-export--format-backlink
+   (org-roam-export-backlink-title backlink)
+   (org-roam-export-backlink-excerpt backlink)))
+
+(defun org-roam-export-preprocessor (backend)
+  "Append org-roam backlinks with content when applicable before
+passing to the org export BACKEND."
+  (when-let ((node (org-roam-node-at-point)))
+    (let ((backlinks (org-roam-backlinks-get node)))
+      (when backlinks
+        (save-excursion
+          (goto-char (point-max))
+          (insert (concat "\n* Backlinks\n"
+                          (string-join (mapcar #'org-roam-export-format-backlink backlinks)))))))))
 
 (provide 'org-roam-export)
 ;;; org-roam-export.el ends here

@@ -116,16 +116,17 @@ lobortis quam non eleifend. Pellentesque vitae imperdiet nisl.\n")
                  (mapcar #'org-roam-export-backlink-excerpt (org-roam-backlinks-get (org-roam-node-from-id "e6c17c1a-6b05-40d2-a01f-b147633c51b1") :unique t)))))
 
 (ert-deftest format-backlink-test ()
-  (should (equal "** Heading > Subheading
+  (should (equal "** [[id:34cf17c6-f804-4adb-b386-3c6dfb83cfad][Heading > Subheading]]
 
 Paragraph text.
 "
                  (org-roam-export--format-backlink
+                  "id:34cf17c6-f804-4adb-b386-3c6dfb83cfad"
                   "Heading > Subheading"
                   "Paragraph text.\n"))))
 
 (ert-deftest format-backlink-with-subheadings ()
-  (should (equal "** Heading
+  (should (equal "** [[id:9428184d-5030-4e5b-91f6-b865d5cc311b][Heading]]
 
 *** Subheading One
 
@@ -138,6 +139,7 @@ Paragraph text.
 Paragraph text.
 "
                  (org-roam-export--format-backlink
+                  "id:9428184d-5030-4e5b-91f6-b865d5cc311b"
                   "Heading"
                   "** Subheading One
 

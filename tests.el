@@ -79,18 +79,21 @@ Opening paragraph.
 (ert-deftest excerpt-heading-with-subheadings-test ()
   (with-test-document
    (goto-line 8)
-    (should (equal "  Heading one paragraph.
+    (should (equal "* Heading One
+
+  Heading one paragraph.
 
 ** Subheading One A
 
   - List item 1
   - List item 2
+
 " (org-roam-export--excerpt)))))
 
 (ert-deftest excerpt-simple-heading-test ()
   (with-test-document
    (goto-line 17)
-   (should (equal "  Heading two paragraph.\n" (org-roam-export--excerpt)))))
+   (should (equal "* Heading Two\n\n  Heading two paragraph.\n" (org-roam-export--excerpt)))))
 
 (ert-deftest lorem-backlink-excerpt ()
   (should (equal '("Aliquam [[id:d12a1ce4-3199-42f4-b39b-b68c03458669][lorem]] ante, suscipit a lorem molestie, aliquet elementum eros. Proin

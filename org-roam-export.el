@@ -37,10 +37,13 @@
   "Extract an excerpt from ELEMENT in BUFFER."
   (with-current-buffer (or buffer (current-buffer))
     (let ((element (or element (org-element-at-point))))
-      (if-let ((begin (org-element-property :contents-begin element))
-               (end (org-element-property :contents-end element)))
-          (buffer-substring begin end)
-        ""))))
+      (if (eq 'headline (org-element-type element))
+          (progn (org-mark-subtree)
+                 (buffer-substring (point) (mark)))
+        (if-let ((begin (org-element-property :contents-begin element))
+                 (end (org-element-property :contents-end element)))
+            (buffer-substring begin end)
+          "")))))
 
 (defun org-roam-export-backlink-excerpt (backlink)
   "Get the Org element containing the link from BACKLINK as an excerpt."

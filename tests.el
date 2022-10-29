@@ -12,7 +12,7 @@
 
 (require 'ert)
 (require 'org-roam)
-(require 'org-roam-export)
+(require 'org-roam-export-backlinks)
 
 (setq org-roam-directory (expand-file-name "./test-slipbox")
       org-roam-db-location (expand-file-name "./test-slipbox/org-roam.db"))
@@ -22,19 +22,19 @@
 
 (ert-deftest lorem-backlink-titles ()
   (should (equal '("Ipsum > II")
-                 (mapcar #'org-roam-export-backlink-title (org-roam-backlinks-get (org-roam-node-from-id "d12a1ce4-3199-42f4-b39b-b68c03458669") :unique t)))))
+                 (mapcar #'org-roam-export-backlinks-title (org-roam-backlinks-get (org-roam-node-from-id "d12a1ce4-3199-42f4-b39b-b68c03458669") :unique t)))))
 
 (ert-deftest ipsum-backlink-titles ()
   (should (equal '("Lorem")
-                 (mapcar #'org-roam-export-backlink-title (org-roam-backlinks-get (org-roam-node-from-id "e6c17c1a-6b05-40d2-a01f-b147633c51b1") :unique t)))))
+                 (mapcar #'org-roam-export-backlinks-title (org-roam-backlinks-get (org-roam-node-from-id "e6c17c1a-6b05-40d2-a01f-b147633c51b1") :unique t)))))
 
 (ert-deftest lorem-backlink-link ()
   (should (equal '("id:e6c17c1a-6b05-40d2-a01f-b147633c51b1")
-                 (mapcar #'org-roam-export-backlink-link (org-roam-backlinks-get (org-roam-node-from-id "d12a1ce4-3199-42f4-b39b-b68c03458669") :unique t)))))
+                 (mapcar #'org-roam-export-backlinks-link (org-roam-backlinks-get (org-roam-node-from-id "d12a1ce4-3199-42f4-b39b-b68c03458669") :unique t)))))
 
 (ert-deftest ipsum-backlink-link ()
   (should (equal '("id:d12a1ce4-3199-42f4-b39b-b68c03458669")
-                 (mapcar #'org-roam-export-backlink-link (org-roam-backlinks-get (org-roam-node-from-id "e6c17c1a-6b05-40d2-a01f-b147633c51b1") :unique t)))))
+                 (mapcar #'org-roam-export-backlinks-link (org-roam-backlinks-get (org-roam-node-from-id "e6c17c1a-6b05-40d2-a01f-b147633c51b1") :unique t)))))
 
 (defmacro with-test-document (&rest body)
   `(with-temp-buffer
@@ -64,17 +64,17 @@ Opening paragraph.
 (ert-deftest excerpt-opening-paragraph-test ()
   (with-test-document
    (goto-line 6)
-   (should (equal "Opening paragraph.\n" (org-roam-export--excerpt)))))
+   (should (equal "Opening paragraph.\n" (org-roam-export-backlinks--excerpt)))))
 
 (ert-deftest excerpt-heading-paragraph-test ()
   (with-test-document
    (goto-line 10)
-   (should (equal "  Heading one paragraph.\n" (org-roam-export--excerpt)))))
+   (should (equal "  Heading one paragraph.\n" (org-roam-export-backlinks--excerpt)))))
 
 (ert-deftest excerpt-list-test ()
   (with-test-document
     (goto-line 14)
-    (should (equal "  - List item 1\n  - List item 2\n" (org-roam-export--excerpt)))))
+    (should (equal "  - List item 1\n  - List item 2\n" (org-roam-export-backlinks--excerpt)))))
 
 (ert-deftest excerpt-heading-with-subheadings-test ()
   (with-test-document
@@ -88,12 +88,12 @@ Opening paragraph.
   - List item 1
   - List item 2
 
-" (org-roam-export--excerpt)))))
+" (org-roam-export-backlinks--excerpt)))))
 
 (ert-deftest excerpt-simple-heading-test ()
   (with-test-document
    (goto-line 17)
-   (should (equal "* Heading Two\n\n  Heading two paragraph.\n" (org-roam-export--excerpt)))))
+   (should (equal "* Heading Two\n\n  Heading two paragraph.\n" (org-roam-export-backlinks--excerpt)))))
 
 (ert-deftest lorem-backlink-excerpt ()
   (should (equal '("Aliquam [[id:d12a1ce4-3199-42f4-b39b-b68c03458669][lorem]] ante, suscipit a lorem molestie, aliquet elementum eros. Proin
@@ -106,7 +106,7 @@ commodo, lacinia odio vitae, blandit metus. Nam et tempus ipsum. Aenean lobortis
 mauris sit amet lorem accumsan blandit. Fusce eleifend, tellus non tristique
 auctor, ligula justo varius dolor, id bibendum nulla elit ac dui. Vestibulum
 sodales enim eget tristique tempor.\n")
-                 (mapcar #'org-roam-export-backlink-excerpt (org-roam-backlinks-get (org-roam-node-from-id "d12a1ce4-3199-42f4-b39b-b68c03458669") :unique t)))))
+                 (mapcar #'org-roam-export-backlinks-excerpt (org-roam-backlinks-get (org-roam-node-from-id "d12a1ce4-3199-42f4-b39b-b68c03458669") :unique t)))))
 
 (ert-deftest ipsum-backlink-excerpt ()
   (should (equal '("Lorem [[id:e6c17c1a-6b05-40d2-a01f-b147633c51b1][ipsum]] dolor sit amet, consectetur adipiscing elit. Mauris eget viverra mi.
@@ -116,14 +116,14 @@ Morbi id malesuada nisi. Praesent ipsum velit, commodo vel bibendum vitae,
 dignissim in magna. Pellentesque vehicula enim ante, interdum laoreet dolor
 venenatis eget. Proin laoreet nulla a enim bibendum finibus. Proin mattis
 lobortis quam non eleifend. Pellentesque vitae imperdiet nisl.\n")
-                 (mapcar #'org-roam-export-backlink-excerpt (org-roam-backlinks-get (org-roam-node-from-id "e6c17c1a-6b05-40d2-a01f-b147633c51b1") :unique t)))))
+                 (mapcar #'org-roam-export-backlinks-excerpt (org-roam-backlinks-get (org-roam-node-from-id "e6c17c1a-6b05-40d2-a01f-b147633c51b1") :unique t)))))
 
 (ert-deftest format-backlink-test ()
   (should (equal "** [[id:34cf17c6-f804-4adb-b386-3c6dfb83cfad][Heading > Subheading]]
 
 Paragraph text.
 "
-                 (org-roam-export--format-backlink
+                 (org-roam-export-backlinks--format
                   "id:34cf17c6-f804-4adb-b386-3c6dfb83cfad"
                   "Heading > Subheading"
                   "Paragraph text.\n"))))
@@ -141,7 +141,7 @@ Paragraph text.
 
 Paragraph text.
 "
-                 (org-roam-export--format-backlink
+                 (org-roam-export-backlinks--format
                   "id:9428184d-5030-4e5b-91f6-b865d5cc311b"
                   "Heading"
                   "** Subheading One

@@ -1,12 +1,12 @@
-;;; org-roam-export.el --- Description -*- lexical-binding: t; -*-
+;;; org-roam-export-backlinks.el --- Include backlinks in exported org documents -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (C) 2022 Correl Roush
 ;;
 ;; Author: Correl Roush <correl@gmail.com>
 ;; Maintainer: Correl Roush <correl@gmail.com>
 ;; Created: June 10, 2022
-;; Modified: June 10, 2022
-;; Version: 0.0.1
+;; Modified: October 29, 2022
+;; Version: 0.0.2
 ;; Keywords: abbrev bib c calendar comm convenience data docs emulations extensions faces files frames games hardware help hypermedia i18n internal languages lisp local maint mail matching mouse multimedia news outlines processes terminals tex tools unix vc wp
 ;; Homepage: https://github.com/correlr/org-roam-export
 ;; Package-Requires: ((emacs "25.1") (org-roam "2.2.1"))
@@ -21,7 +21,7 @@
 
 (require 'org-roam)
 
-(defun org-roam-export-backlink-title (backlink)
+(defun org-roam-export-backlinks-title (backlink)
   "Get exportable title of BACKLINK."
   (mapconcat #'identity
              (append
@@ -29,11 +29,11 @@
               (plist-get (org-roam-backlink-properties backlink) :outline))
              " > "))
 
-(defun org-roam-export-backlink-link (backlink)
+(defun org-roam-export-backlinks-link (backlink)
   "Get Org link to BACKLINK."
   (concat "id:" (org-roam-node-id (org-roam-backlink-source-node backlink))))
 
-(defun org-roam-export--excerpt (&optional buffer element)
+(defun org-roam-export-backlinks--excerpt (&optional buffer element)
   "Extract an excerpt from ELEMENT in BUFFER."
   (with-current-buffer (or buffer (current-buffer))
     (let ((element (or element (org-element-at-point))))
@@ -45,14 +45,14 @@
             (buffer-substring begin end)
           "")))))
 
-(defun org-roam-export-backlink-excerpt (backlink)
+(defun org-roam-export-backlinks-excerpt (backlink)
   "Get the Org element containing the link from BACKLINK as an excerpt."
   (with-temp-buffer
     (insert-file-contents (org-roam-node-file (org-roam-backlink-source-node backlink)))
     (goto-char (org-roam-backlink-point backlink))
-    (org-roam-export--excerpt)))
+    (org-roam-export-backlinks--excerpt)))
 
-(defun org-roam-export--format-backlink (link title excerpt)
+(defun org-roam-export-backlinks--format (link title excerpt)
   "Format a backlink with TITLE and EXCERPT for inclusion in an Org document."
   (with-temp-buffer
     (org-mode)
@@ -61,14 +61,14 @@
       (insert excerpt))
     (buffer-string)))
 
-(defun org-roam-export-format-backlink (backlink)
+(defun org-roam-export-backlinks-format (backlink)
   "Format a BACKLINK for inclusion in an Org document."
-  (org-roam-export--format-backlink
-   (org-roam-export-backlink-link backlink)
-   (org-roam-export-backlink-title backlink)
-   (org-roam-export-backlink-excerpt backlink)))
+  (org-roam-export-backlinks--format
+   (org-roam-export-backlinks-link backlink)
+   (org-roam-export-backlinks-title backlink)
+   (org-roam-export-backlinks-excerpt backlink)))
 
-(defun org-roam-export-preprocessor (backend)
+(defun org-roam-export-backlinks-preprocessor (backend)
   "Append org-roam backlinks with content when applicable before
 passing to the org export BACKEND."
   (when-let ((node (org-roam-node-at-point)))
@@ -77,7 +77,7 @@ passing to the org export BACKEND."
         (save-excursion
           (goto-char (point-max))
           (insert (concat "\n* Backlinks\n"
-                          (string-join (mapcar #'org-roam-export-format-backlink backlinks)))))))))
+                          (string-join (mapcar #'org-roam-export-backlinks-format backlinks)))))))))
 
-(provide 'org-roam-export)
-;;; org-roam-export.el ends here
+(provide 'org-roam-export-backlinks)
+;;; org-roam-export-backlinks.el ends here

@@ -1,0 +1,16 @@
+#+title: org-roam-export-backlinks
+
+This package appends a backlinks section with excerpts to your exported org-roam
+documents.
+
+The package exports an =org-roam-export-backlinks-preprocessor= function that
+can be added to the =org-export-before-processing-hook=.
+
+* Example usage in Doom Emacs
+
+#+begin_src emacs-lisp
+  (use-package! org-roam-export-backlinks
+    :after org-roam
+    :init
+    (add-hook 'org-export-before-processing-hook #'org-roam-export-backlinks-preprocessor))
+#+end_src

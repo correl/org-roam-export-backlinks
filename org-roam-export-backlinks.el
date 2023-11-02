@@ -48,6 +48,7 @@
 (defun org-roam-export-backlinks-excerpt (backlink)
   "Get the Org element containing the link from BACKLINK as an excerpt."
   (with-temp-buffer
+    (org-mode)
     (insert-file-contents (org-roam-node-file (org-roam-backlink-source-node backlink)))
     (goto-char (org-roam-backlink-point backlink))
     (org-roam-export-backlinks--excerpt)))

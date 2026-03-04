@@ -21,6 +21,9 @@
 
 (require 'org-roam)
 
+(defvar org-roam-export-backlinks nil
+  "Add an Org-Roam backlinks section to exported documents.")
+
 (defun org-roam-export-backlinks-title (backlink)
   "Get exportable title of BACKLINK."
   (mapconcat #'identity
@@ -72,13 +75,14 @@
 (defun org-roam-export-backlinks-preprocessor (backend)
   "Append org-roam backlinks with content when applicable before
 passing to the org export BACKEND."
-  (when-let ((node (org-roam-node-at-point)))
-    (let ((backlinks (org-roam-backlinks-get node)))
-      (when backlinks
-        (save-excursion
-          (goto-char (point-max))
-          (insert (concat "\n* Backlinks\n"
-                          (string-join (mapcar #'org-roam-export-backlinks-format backlinks)))))))))
+  (when org-roam-export-backlinks
+    (when-let ((node (org-roam-node-at-point)))
+      (let ((backlinks (org-roam-backlinks-get node)))
+        (when backlinks
+          (save-excursion
+            (goto-char (point-max))
+            (insert (concat "\n* Backlinks\n"
+                            (string-join (mapcar #'org-roam-export-backlinks-format backlinks))))))))))
 
 (provide 'org-roam-export-backlinks)
 ;;; org-roam-export-backlinks.el ends here
